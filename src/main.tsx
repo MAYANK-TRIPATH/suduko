@@ -8,7 +8,7 @@ import { Home, Game } from './components';
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index element={<Home />} />
+      <Route path='' element={<Home />} />
       <Route path="game" element={<Game />} />
     </Route>
   )
