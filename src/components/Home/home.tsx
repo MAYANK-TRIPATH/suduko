@@ -12,7 +12,7 @@ const Home: React.FC = () => {
 
       <div className="bg-white/10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-96 text-center border border-purple-500/30 transform transition-all duration-300 hover:scale-105">
         <div className="space-y-6">
-          <button className="w-full py-3 text-lg font-semibold uppercase rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg hover:from-purple-500 hover:to-pink-500 transition-all duration-200 transform hover:scale-105 active:scale-95">
+          <button  className="w-full py-3 text-lg font-semibold uppercase rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg hover:from-purple-500 hover:to-pink-500 transition-all duration-200 transform hover:scale-105 active:scale-95">
             New Game
           </button>
           <button className="w-full py-3 text-lg font-semibold uppercase rounded-lg bg-gradient-to-r from-green-600 to-teal-600 shadow-lg hover:from-green-500 hover:to-teal-500 transition-all duration-200 transform hover:scale-105 active:scale-95">
