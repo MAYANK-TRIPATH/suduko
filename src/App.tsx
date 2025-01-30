@@ -1,12 +1,8 @@
-import React from 'react'
+import { Outlet } from "react-router-dom";
 
-const App = () => {
-  return (
-    <div >
-      APp
 
-    </div>
+export default function App() {
+  return(
+    <Outlet></Outlet>
   )
 }
-
-export default App
