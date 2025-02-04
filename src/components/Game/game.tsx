@@ -1,12 +1,24 @@
-import React from "react";
-import Board from "../Board/board";
+import React, { useEffect } from "react";
 import { Lightbulb, LogOut, Pause, PencilLine } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useGame } from "../../store/gameStore"
+import Board from "../Board/Board";
 
 const Game: React.FC = () => {
+
+  const navigate = useNavigate();
+  const {isStart} = useGame();
+  
+  useEffect(() => {
+    if(!isStart){
+      navigate('/')
+    }
+  }, [])
+
   return (
     <div className="flex flex-col justify-center items-center h-screen w-screen bg-black text-white">
       
-      <Board />
+      <Board/>
 
       
       <div className="flex items-center w-full max-w-md justify-around mt-6 space-x-4">

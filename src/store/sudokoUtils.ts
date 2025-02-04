@@ -32,6 +32,7 @@ export const MODES: Record<Mode, ModeConfig> = {
     },
 };
 
+// Function to generate Random Numbers
 export function generateRandom(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -48,12 +49,14 @@ type Cell = {
 
 type UnsolvedBoard = Cell[][];
 
+//This function checks if placing num in board[row][col] follows Sudoku rules.
 export function isSafe(board: Board, row: number, col: number, num: number): boolean {
     for (let x = 0; x < 9; x++) {
         if (board[row][x] === num || board[x][col] === num) {
             return false;
         }
-    }
+    } // If num is already in the same row or same column, return false
+
     const iRow = Math.floor(row / 3) * 3;
     const iCol = Math.floor(col / 3) * 3;
     for (let x = iRow; x < iRow + 3; x++) {
@@ -108,3 +111,5 @@ export function sudoku(mode: Mode) {
     );
     return { solvedBoard, unSolvedBoard: formattedUnSolvedBoard };
 }
+
+
