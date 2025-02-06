@@ -9,11 +9,11 @@ const Game: React.FC = () => {
   const navigate = useNavigate();
   const {isStart} = useGame();
   
-  useEffect(() => {
-    if(!isStart){
-      navigate('/')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(!isStart){
+  //     navigate('/')
+  //   }
+  // }, [])
 
   return (
     <div className="flex flex-col justify-center items-center h-screen w-screen bg-black text-white">

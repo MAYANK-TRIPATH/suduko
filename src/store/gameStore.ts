@@ -58,7 +58,7 @@ const initialState: GameState = {
   },
 };
 
-// Zustand store with type safety
+
 export const useGame = create<GameState & GameActions>((set) => ({
   ...initialState,
 

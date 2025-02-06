@@ -1,14 +1,17 @@
 import React, { useRef } from "react";
 import { useGame } from "../../store/gameStore";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const { startGame } = useGame();
+  const navigate = useNavigate()
   const modeRef = useRef<HTMLSelectElement | null>(null);
 
   function handleStart() {
     if (modeRef.current) {
       startGame(modeRef.current.value);
       localStorage.setItem("mode", modeRef.current.value);
+      navigate("/game")
     }
   }
 
