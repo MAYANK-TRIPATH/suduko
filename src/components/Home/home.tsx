@@ -1,70 +1,108 @@
-import React, { useRef } from "react";
-import { useGame } from "../../store/gameStore";
-import { useNavigate } from "react-router-dom";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import React, { useEffect, useRef } from "react";
+import { useBoard } from "../../store/useBoard";
+import { Link, useNavigate } from "react-router-dom";
 
-const Home: React.FC = () => {
-  const { startGame } = useGame();
+function Home() {
+  const butonsRef = useRef([]);
+  const modeRef = useRef();
+  const {startGame,continueGame} = useBoard()
   const navigate = useNavigate()
-  const modeRef = useRef<HTMLSelectElement | null>(null);
-
-  function handleStart() {
-    if (modeRef.current) {
-      startGame(modeRef.current.value);
-      localStorage.setItem("mode", modeRef.current.value);
-      navigate("/game")
-    }
+  function handleStart(){
+    startGame(modeRef.current.value)
+    localStorage.setItem('mode',modeRef.current.value)
+    navigate('/game')
   }
-
+  useGSAP(() => {
+    const tl = gsap.timeline();
+    tl.from("#Heading", {
+      y: -50,
+      opacity: 0,
+      duration: 0.3,
+      delay: 0.2,
+    });
+    tl.from(butonsRef.current, {
+      y: -50,
+      opacity: 0,
+      duration: 0.3,
+      delay: 0.2,
+      stagger: 0.1,
+    });
+  });
+  useEffect(() => {
+    modeRef.current.value = localStorage.getItem('mode')?localStorage.getItem('mode'):"easy"
+    butonsRef.current?.forEach((button) => {
+      gsap.fromTo(
+        button,
+        { scale: 1 },
+        {
+          scale: 0.9,
+          duration: 0.1,
+          paused: true,
+          ease: "power1.inOut",
+          onComplete: () =>
+            gsap.to(button, { scale: 1, duration: 0.1, ease: "power1.inOut" }),
+        }
+      );
+      button.addEventListener("mousedown", () =>
+        gsap.to(button, { scale: 0.9, duration: 0.1 })
+      );
+      button.addEventListener("mouseup", () =>
+        gsap.to(button, { scale: 1, duration: 0.1 })
+      );
+      button.addEventListener("mouseleave", () =>
+        gsap.to(button, { scale: 1, duration: 0.1 })
+      );
+    });
+  }, []);
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      <h1
-        id="heading"
-        className="text-6xl font-extrabold mb-8 tracking-widest text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-pulse"
-      >
-        SUDOKU GAME
-      </h1>
+    <>
+      <span id="Heading" className="text-3xl font-bold">
+        Sudoku Game
+      </span>
+      <div className="flex flex-col gap-5 items-center justify-center">
+        <button
+          onClick={handleStart}
+          ref={(el) => butonsRef.current.push(el)}
+          className="option bg-slate-900 p-3 rounded-md hover:bg-slate-800  active:scale-90"
+        >
+          Start New
+        </button>
+        <button
+        onClick={()=>{continueGame();navigate('/game')}}
+          ref={(el) => butonsRef.current.push(el)}
 
-      <div className="bg-white/10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-96 text-center border border-purple-500/30 transform transition-all duration-300 hover:scale-105">
-        <div className="space-y-6">
-          <button
-            onClick={handleStart}
-            className="w-full py-3 text-lg font-semibold uppercase rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg hover:from-purple-500 hover:to-pink-500 transition-all duration-200 transform hover:scale-105 active:scale-95"
-          >
-            New Game
-          </button>
-          <button className="w-full py-3 text-lg font-semibold uppercase rounded-lg bg-gradient-to-r from-green-600 to-teal-600 shadow-lg hover:from-green-500 hover:to-teal-500 transition-all duration-200 transform hover:scale-105 active:scale-95">
-            Continue
-          </button>
-        </div>
+          className="option bg-slate-900 p-3 rounded-md hover:bg-slate-800  active:scale-90"
+        >
+          Continue
+        </button>
+        <Link
+        to={'/custom-suduko'}
+          ref={(el) => butonsRef.current.push(el)}
 
-        <div className="mt-8">
-          <label htmlFor="mode" className="font-semibold text-lg text-purple-200">
-            Difficulty:
-          </label>
+          className="option bg-slate-900 p-3 rounded-md hover:bg-slate-800  active:scale-90"
+        >
+          Custom
+        </Link>
+        <div ref={(el) => butonsRef.current.push(el)} className="flex option items-center gap-5">
+          <label className="text-xl font-semibold" htmlFor="mode">Difficulty:</label>
           <select
+            className="bg-slate-900 p-5 rounded-lg"
             id="mode"
             ref={modeRef}
-            className="w-full mt-2 bg-gray-800/50 text-white py-3 px-5 rounded-lg text-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400 border border-purple-500/30"
-            defaultValue="Noop"
+            defaultValue="easy"
           >
-            <option value="Noop" className="bg-gray-800">
-              Noob 🫣
-            </option>
-            <option value="Medium" className="bg-gray-800">
-              Medium 🤓
-            </option>
-            <option value="Expert" className="bg-gray-800">
-              Expert 😎
-            </option>
+            <option value="veryEasy">Very Easy</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+            <option value="extreme">Extreme</option>
           </select>
         </div>
       </div>
-
-      <div className="mt-12 text-sm text-purple-300/50">
-        &copy; {new Date().getFullYear()} Sudoku Game. All rights reserved.
-      </div>
-    </div>
+    </>
   );
-};
+}
 
 export default Home;

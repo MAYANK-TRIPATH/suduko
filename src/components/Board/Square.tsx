@@ -1,20 +1,23 @@
-import Cell from "./Cell";
+import React from "react";
+import MiniSquare from "./MiniSquare";
 
+type SquareProps = {
+  row: number;
+  col: number;
+};
 
-export default function Square({ row, col }) {
-
-    const squares = Array(3).fill(Array(3).fill(null))
-
-    return (
-        <div className="box w-full h-full gap-1 flex flex-col">
-            {squares.map((arr, i) => (
-                <div key={i}className="flex gap-2 h-full w-full">
-                    {arr.map((_, k) => (
-                        <Cell key={k} row={row * 3 + i} col={col * 3 + k} />
-                    ))}
-                </div>
-            ))}
-
+const Square: React.FC<SquareProps> = ({ row, col }) => {
+  return (
+    <div className="box w-full h-full gap-1 flex flex-col">
+      {[0, 1, 2].map((r) => (
+        <div key={r} className="flex gap-1 w-full h-full">
+          {[0, 1, 2].map((c) => (
+            <MiniSquare key={c} row={row * 3 + r} col={col * 3 + c} />
+          ))}
         </div>
-    )
-}
+      ))}
+    </div>
+  );
+};
+
+export default Square;
